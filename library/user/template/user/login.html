@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library Management System | WSEI - Login</title>
+    <style>
+      body {
+        background-image: url("/static/user/wsei1.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+        background-position: center;
+      }
+      .login-area {
+        width: 35%;
+        margin: auto;
+        box-shadow: 0px 0px 10px #52779acf;
+        margin-top: 5%;
+
+        text-align: center;
+        background-color: #52779af4;
+        border-radius: 10px;
+        padding: 0px 3%;
+        box-sizing: border-box;
+      }
+      .login-input {
+        /* background-color: white; */
+        padding: 5%;
+        text-align: left;
+        padding-bottom: 15%;
+        /* background-color: red; */
+      }
+      .login-input input {
+        padding: 3%;
+        width: 100%;
+        /* border-radius: 10px; */
+        margin: 0% 0px;
+        box-sizing: border-box;
+        border: none;
+        /* background-color: #04427c; */
+        background-color: white;
+        color: #52779acf;
+      }
+      .login-input input:focus {
+        outline: none;
+      }
+      .btn {
+        width: 100%;
+        padding: 2%;
+        color: white;
+        background-color: black;
+        border-radius: 10px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .login-area {
+          width: 95%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-area">
+      <img src="/static/user/logo-wsei.png" alt="background image" />
+      {% for message in messages %}
+      <p style="background-color: red; padding: 2%; margin: 5%">{{message}}</p>
+      {% endfor %}
+      <p style="color: white">Library System.....</p>
+      <div class="login-input">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div>
+            <h4 style="color: white; margin: 1%">Enter User ID</h4>
+            <input
+              type="text"
+              name="username"
+              required
+              id="id_username"
+              placeholder="User ID"
+            />
+          </div>
+          <hr />
+          <div>
+            <h4 style="color: white; margin: 1.8%">Enter Password</h4>
+            <input
+              type="password"
+              name="password"
+              required
+              id="id_password"
+              placeholder="Password"
+            />
+          </div>
+          <p><button class="btn btn-primary">Login</button></p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
