@@ -1,0 +1,135 @@
+{% extends 'user/staff_dashboard.html' %} {% load static %} {% block content %}
+<style>
+  p > a {
+    text-decoration: none;
+    color: black;
+  }
+</style>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-4">
+      <a href="/account/staff/create" class="btn btn-primary">Add Staff</a>
+      <a href="/account/staff/create/student" class="btn btn-primary"
+        >Add Student</a
+      >
+    </div>
+  </div>
+  <hr />
+  <!-- Search Bar -->
+
+  <!-- User Table -->
+  <div class="row">
+    <!-- begining of left side -->
+    <div class="col-md-9">
+      <form method="GET" class="mb-4">
+        <div class="row g-2 align-items-center">
+          <div class="col-md-6">
+            <input
+              type="text"
+              name="search"
+              class="form-control"
+              placeholder="Search users..."
+            />
+          </div>
+
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+          </div>
+        </div>
+      </form>
+      <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Full Name</th>
+            <!-- <th>Category</th> -->
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Borrowed Books</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Loop through users -->
+          {% for user in users %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ user.user.first_name }} {{ user.user.last_name }}</td>
+            <!-- <td></td> -->
+            <td>{{ user.phone }}</td>
+            <td>{{ user.role|default:"-" }}</td>
+            <td>
+              {% if user.has_borrowed %} {{ user.book_borrow.all|join:", " }}
+              {%else%} No books borrowed {% endif %}
+            </td>
+            <td>
+              {% if user.is_staff %}
+              <a
+                href="/account/staff/update/{{user.pk}}"
+                class="btn btn-warning btn-sm"
+                >Update</a
+              >
+              <a
+                href="/account/staff/delete/{{user.pk}}"
+                class="btn btn-danger btn-sm"
+                >Delete</a
+              >
+              {% else %}
+              <a
+                href="/account/staff/update/{{user.pk}}/student"
+                class="btn btn-warning btn-sm"
+                >Update</a
+              >
+              <a
+                href="/account/staff/delete/{{user.pk}}/student"
+                class="btn btn-danger btn-sm"
+                >Delete</a
+              >
+              {%endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center">No users found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- end of left side -->
+    <!-- begining of right part -->
+    <div
+      class="col-md-3"
+      style="
+        background-color: #52779a64;
+        padding: 1px;
+        border: 1px solid #52779a;
+      "
+    >
+      <h4 style="background: white; padding: 1.7%; margin: 0px">
+        Filter Users
+      </h4>
+      <div style="padding: 1%">
+        <p>
+          <i class="fa-solid fa-reply-all"></i> -
+          <a href="?" style="text-decoration: none">All Categories</a>
+        </p>
+        <p>
+          <i class="fa-solid fa-user-tie"></i> -
+          <a href="?category=administrator">Administrator</a>
+        </p>
+        <p>
+          <i class="fa-solid fa-book"></i> -
+          <a href="?category=librarian">Librarian</a>
+        </p>
+        <p>
+          <i class="fa-solid fa-graduation-cap"></i> -
+          <a href="?category=student">Student</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Bootstrap JS (aal) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

@@ -89,18 +89,18 @@
               <i class="fa-solid fa-book fa-fw me-3"></i><span>Add Book</span>
             </a>
             <a
-              href="#"
+              href="/books/"
               class="list-group-item list-group-item-action py-2 ripple"
               ><i class="fa-regular fa-eye fa-fw me-3"></i
               ><span>View Books</span></a
             >
             <a
-              href="#"
+              href="/account/users/"
               class="list-group-item list-group-item-action py-2 ripple"
               ><i class="fas fa-chart-line fa-fw me-3"></i
               ><span>Manage Users</span></a
             >
-            <a
+            <!-- <a
               href="#"
               class="list-group-item list-group-item-action py-2 ripple"
               ><i class="fas fa-chart-pie fa-fw me-3"></i
@@ -123,7 +123,7 @@
               class="list-group-item list-group-item-action py-2 ripple"
               ><i class="fas fa-chart-pie fa-fw me-3"></i
               ><span>Borrow Book Out</span></a
-            >
+            > -->
           </div>
         </div>
       </nav>
@@ -155,7 +155,9 @@
               alt="Logo"
               loading="lazy"
             />
+            WSEI Library System(Practicals)
           </a>
+          <a class="btn btn-warning" href="/account/logout">Logout</a>
         </div>
       </nav>
       <!-- Navbar -->
@@ -166,7 +168,16 @@
     <main>
       <div class="container">
         <div class="container mt-3">
-          {% block content %}
+          {% for message in messages %}
+          <div class="alert alert-success alert-dismissible">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+            ></button>
+            <strong>Success!</strong> {{message}}.
+          </div>
+          {% endfor %} {% block content %}
           <div class="row">
             <div class="col-md-10">
               <h4>Welcome to the Library Management Dashboard</h4>
