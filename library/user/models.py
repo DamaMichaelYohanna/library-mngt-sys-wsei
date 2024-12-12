@@ -21,6 +21,7 @@ class Librarian(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=11)
     role = models.CharField(max_length=50)
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user}'
@@ -33,6 +34,9 @@ class Student(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book_borrow = models.ManyToManyField(Book, blank=True)
     has_borrowed = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
+    role = models.CharField(max_length=7, default="Student")
+
 
     def __str__(self):
         return f'{self.user}'
