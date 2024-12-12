@@ -1,0 +1,11 @@
+{% extends 'user/staff_dashboard.html' %} {% load static %} {% block content %}
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Update Book: {{ book.name }}</h1>
+  <form method="POST">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a href="{% url 'book_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}
