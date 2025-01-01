@@ -1,6 +1,78 @@
 {% extends 'user/staff_dashboard.html' %} {% load static %} {%block content %}
 <form method="post">
-  {% csrf_token %} {{ form.as_p }}
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="id_phone" class="form-label">Phone:</label>
+    <input
+      type="text"
+      class="form-control"
+      name="phone"
+      placeholder="Enter a valid phone number"
+      maxlength="11"
+      required
+      id="id_phone"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="id_role" class="form-label">Role:</label>
+    <input
+      type="text"
+      class="form-control"
+      name="role"
+      placeholder="Enter the role"
+      maxlength="50"
+      required
+      id="id_role"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="id_first_name" class="form-label">First Name:</label>
+    <input
+      type="text"
+      class="form-control"
+      name="first_name"
+      maxlength="30"
+      required
+      id="id_first_name"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="id_last_name" class="form-label">Last Name:</label>
+    <input
+      type="text"
+      class="form-control"
+      name="last_name"
+      maxlength="30"
+      required
+      id="id_last_name"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="id_email" class="form-label">Email:</label>
+    <input
+      type="email"
+      class="form-control"
+      name="email"
+      maxlength="320"
+      required
+      id="id_email"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="id_password" class="form-label">Password:</label>
+    <input
+      type="password"
+      class="form-control"
+      name="password"
+      required
+      id="id_password"
+    />
+  </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
