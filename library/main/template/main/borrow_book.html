@@ -1,0 +1,41 @@
+{% extends 'user/staff_dashboard.html' %} {% load static %} {% block content %}
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Borrow Out Book</h1>
+
+  <!-- Book Details Section -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Book Details</h5>
+      <p class="card-text"><strong>Title:</strong> {{ book.name }}</p>
+      <p class="card-text">
+        <strong>Author:</strong> {% for author in book.author.all %}
+        {{author.full_name}} {%endfor %}
+      </p>
+      <p class="card-text">
+        <strong>Is available:</strong> {{ book.is_available }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Borrow Form -->
+  <form method="POST" action="{% url 'main:borrow_book' book.id %}">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="student" class="form-label">Select Student</label>
+      <select class="form-select" id="student" name="student">
+        <option value="" disabled selected>Choose a student</option>
+        {% for student in student %}
+        <option value="{{ student.id }}">
+          {{ student.user.first_name }} {{ student.user.last_name }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Borrow Book</button>
+    <a href="{% url 'main:book_list' %}" class="btn btn-secondary"
+      >Back to List</a
+    >
+  </form>
+</div>
+
+{% endblock %}

@@ -13,7 +13,7 @@
   </div>
   {% endif %}
 
-  <form method="post" action="{% url 'add_book' %}">
+  <form method="post" action="{% url 'main:add_book' %}">
     {% csrf_token %}
 
     <!-- Book Name -->

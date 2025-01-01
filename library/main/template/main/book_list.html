@@ -3,61 +3,107 @@
   <!-- <h1 class="mb-4 text-center">Book List</h1> -->
 
   <!-- Search Form -->
-  <form method="GET" action="" class="mb-4">
-    <div class="input-group">
-      <input
-        type="text"
-        name="search"
-        class="form-control"
-        placeholder="Search by name, author, or ISBN"
-        value="{{ search_query }}"
-      />
-      <button type="submit" class="btn btn-primary">Search</button>
+  <div class="row">
+    <div class="col-md-6">
+      <form method="POST" class="mb-4">
+        {% csrf_token%}
+        <div class="input-group">
+          <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search by name, author, or ISBN"
+            value="{{ search_query }}"
+          />
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 
   <!-- Table to display books -->
-  <table class="table table-striped table-hover">
-    <thead class="table-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Author(s)</th>
-        <th scope="col">Publisher</th>
-        <th scope="col">ISBN</th>
-        <th scope="col">Available</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Assuming books is a list of dictionaries from the backend -->
-      {% for book in books %}
-      <tr>
-        <th scope="row">{{ forloop.counter }}</th>
-        <td>{{ book.name }}</td>
-        <td>
-          {% for author in book.author.all %} {{author.full_name}}
-{% if not forloop.last %}, ----------------.... .. ............ {% endif %} {% endfor %}
-        </td>
-        <td>{{ book.publisher.name }}</td>
-        <td>{{ book.isbn }}</td>
-        <td>{{ book.is_available|yesno:"Yes,No" }}</td>
-        <td>
-          <div class="d-flex gap-2">
-            <!-- Update Button -->
-            <a href="/books/update/{{book.pk}}/" class="btn btn-success btn-sm"
-              >Update Availability</a
-            >
-            <!-- Delete Button -->
-            <a href="/books/delete/{{book.pk}}/" class="btn btn-danger btn-sm"
-              >Delete</a
-            >
-          </div>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="row">
+    <div class="col-md-8">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Author(s)</th>
+            <th scope="col">Publisher</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Available</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Assuming books is a list of dictionaries from the backend -->
+          {% for book in books %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ book.name }}</td>
+            <td>
+              {% for author in book.author.all %} {{author.full_name}}
+              {%endfor%}
+            </td>
+            <td>{{ book.publisher.name }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.is_available|yesno:"Yes,No" }}</td>
+            <td>
+              <div class="d-flex gap-2">
+                <!-- Update Button -->
+                <a
+                  href="/books/update/{{book.pk}}/"
+                  class="btn btn-success btn-sm"
+                  >Update Availability</a
+                >
+                <!-- Delete Button -->
+                {%if book.is_available %}
+                <a href="/books/borrow/{{book.pk}}/" class="btn btn-info btn-sm"
+                  >Borrow
+                </a>
+                {% endif %}
+                <a
+                  href="/books/delete/{{book.pk}}/"
+                  class="btn btn-danger btn-sm"
+                  >Delete</a
+                >
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="col-md-3"
+      style="
+        background-color: #52779a64;
+        padding: 1px;
+        border: 1px solid #52779a;
+      "
+    >
+      <h4 style="background: white; padding: 1.7%; margin: 0px">Sort Books</h4>
+      <div style="padding: 1%">
+        <p>
+          <i class="fa-solid fa-reply-all"></i> -
+          <a href="?sort=name" style="text-decoration: none">Names</a>
+        </p>
+        <p>
+          <i class="fa-solid fa-user-tie"></i> -
+          <a href="?sort=publisher">Publisher</a>
+        </p>
+        <!-- <p>
+          <i class="fa-solid fa-book"></i> -
+          <a href="?category=librarian">Librarian</a>
+        </p>
+        <p>
+          <i class="fa-solid fa-graduation-cap"></i> -
+          <a href="?category=student">Student</a>
+        </p> -->
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Bootstrap JS (Optional) -->

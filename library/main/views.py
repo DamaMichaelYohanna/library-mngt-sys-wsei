@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+from user.models import Student
+
 from .forms import BookForm
 from .models import Author, Book, Publisher
 
@@ -49,13 +51,22 @@ def search_books(request):
 def book_list(request):
     """list book in admin site"""
     # Get the search query from the request
-    search_query = request.GET.get('search', '')
+    search_query = request.POST.get('search', '')
+    sort_query = request.GET.get('sort', '')
+    print(search_query, sort_query)
 
     # Filter books based on the search query
-    if search_query:
+    if search_query and sort_query:
+        print('both')
         books = Book.objects.filter(
-            name__icontains=search_query  # Search by book name
-        )
+            name__icontains=search_query,  # Search by book name
+        ).order_by(sort_query)
+    elif search_query and not sort_query:
+        books = Book.objects.filter(
+            name__icontains=search_query,  # Search by book name
+        ).order_by(sort_query)
+    elif not search_query and sort_query:
+        books = Book.objects.all().order_by(sort_query)
     else:
         books = Book.objects.all()
 
@@ -90,3 +101,34 @@ def delete_book(request, pk):
         return redirect('/books')  # Redirect to the book list page
 
     return render(request, 'main/delete_book.html', {'book': book})
+
+
+def borrow_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    student = Student.objects.all()
+    if request.method == 'POST':
+        pk = request.POST.get("student")
+        student = get_object_or_404(Student, pk=pk)
+        student.book_borrow.add(book)
+        student.has_borrowed = True
+        student.save()
+        return redirect('user:user_list')
+    else:
+        pass
+    context = {'book': book, 'student': student}
+    return render(request, 'main/borrow_book.html', context=context)
+
+def borrower_list(request):
+    student = Student.objects.filter(has_borrowed=True)
+    context = {'students': student}
+    return render(request, 'main/borrowers.html', context=context)
+             
+def return_book(request, book_id, student_id):
+    book = get_object_or_404(Book, pk=book_id)
+    student = get_object_or_404(Student, pk=student_id)
+    student.book_borrow.remove(book)
+    if not student.book_borrow.exists():
+        student.has_borrowed = False
+
+    student.save()
+    return redirect('main:borrowers')
